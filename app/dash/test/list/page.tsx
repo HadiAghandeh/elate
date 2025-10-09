@@ -25,21 +25,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import ImageIcon from '@mui/icons-material/Image';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import { generateClient } from "aws-amplify/data";
 import { uploadData, getUrl } from '@aws-amplify/storage';
-import type { Schema } from "@/amplify/data/resource";
 import { StorageImage } from '@aws-amplify/ui-react-storage';
+import { TestRepo } from '@/dal/Repositories/TestRepo';
+import Test from '@/dal/models/Test';
 
-const client = generateClient<Schema>();
-
-interface Test {
-    id: string;
-    name: string | null;
-    json_path: string | null;
-    logo_path: string | null;
-    createdAt: string;
-    updatedAt: string;
-}
+const TestRepository = new TestRepo();
 
 export default function Page() {
     const [tests, setTests] = useState<Test[]>([]);
@@ -94,7 +85,13 @@ export default function Page() {
                 });
 
                 // Create record in database with file paths
-                await client.models.Test.create({
+                // await client.models.Test.create({
+                //     name: formData.name,
+                //     json_path: jsonFileKey,
+                //     logo_path: logoFileKey
+                // });
+
+                await TestRepository.create({
                     name: formData.name,
                     json_path: jsonFileKey,
                     logo_path: logoFileKey
@@ -110,15 +107,13 @@ export default function Page() {
         }
     };
 
-    const handleDeleteTest = (id: string) => {
-        client.models.Test.delete({id});
+    const handleDeleteTest = async (id: string) => {
+        await TestRepository.delete(id);
         setTests(tests.filter(test => test.id !== id));
     };
 
     const fetchTests = async () => {
-        const { data: items, errors } = await client.models.Test.list();
-        console.log(items, errors);
-        console.log('test', (await getUrl({ path: items[0].logo_path })).url.toString());
+        const { data: items, errors } = await TestRepository.list();
         setTests(items);
     };
 

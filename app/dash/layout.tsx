@@ -22,7 +22,7 @@ export default function RootLayout({ children }: Props) {
     <html lang="en" suppressHydrationWarning>
       <body>
         <Authenticator>
-          {({ signOut, user }) => (
+          {({ user }) => (
             <AppRouterCacheProvider options={{ enableCssLayer: true }}>
               <ThemeProvider theme={theme}>
                 <DashLayout user={user}>

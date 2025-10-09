@@ -1,5 +1,4 @@
 'use client'
-import Button from '@mui/material/Button';
 import { getCurrentUser, AuthUser } from 'aws-amplify/auth';
 import { useEffect, useState } from 'react';
 
