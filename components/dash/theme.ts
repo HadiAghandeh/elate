@@ -1,6 +1,6 @@
 'use client';
 import { createTheme, } from '@mui/material/styles';
-import { colorSchemes, typography, shadows, shape } from './theme/themePrimitives';
+import { colorSchemes, shape } from './theme/themePrimitives';
 import { inputsCustomizations } from './theme/inputs';
 import { dataDisplayCustomizations } from './theme/dataDisplay';
 import { feedbackCustomizations } from './theme/feedback';

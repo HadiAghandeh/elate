@@ -19,7 +19,9 @@ declare module '@mui/material/styles' {
     900: string;
   }
 
-  interface PaletteColor extends ColorRange {}
+  interface PaletteColor extends ColorRange {
+      [key: string]: string; // This is a member, but it's a wide type
+  }
 
   interface Palette {
     baseShadow: string;
@@ -394,7 +396,7 @@ export const shape = {
   borderRadius: 8,
 };
 
-// @ts-ignore
+// @ts-expect-error The array element is missing a required property
 const defaultShadows: Shadows = [
   'none',
   'var(--template-palette-baseShadow)',

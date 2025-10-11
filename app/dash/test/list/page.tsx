@@ -14,7 +14,6 @@ import {
     DialogTitle,
     DialogContent,
     DialogActions,
-    TextField,
     Fab,
     IconButton,
     Chip,
@@ -23,13 +22,11 @@ import {
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import ImageIcon from '@mui/icons-material/Image';
 import OutlinedInput from '@mui/material/OutlinedInput';
-import { uploadData, getUrl } from '@aws-amplify/storage';
+import { uploadData } from '@aws-amplify/storage';
 import { StorageImage } from '@aws-amplify/ui-react-storage';
 import { TestRepo } from '@/dal/Repositories/TestRepo';
 import Test from '@/dal/models/Test';
-
 const TestRepository = new TestRepo();
 
 export default function Page() {
@@ -107,23 +104,20 @@ export default function Page() {
         }
     };
 
-    const handleDeleteTest = async (id: string) => {
+    const handleDeleteTest = async (id: string|undefined) => {
+        if(!id) return;
         await TestRepository.delete(id);
         setTests(tests.filter(test => test.id !== id));
     };
 
     const fetchTests = async () => {
-        const { data: items, errors } = await TestRepository.list();
+        const { data: items } = await TestRepository.list();
         setTests(items);
     };
 
     useEffect(() => {
         fetchTests();
     }, []);
-
-    const getlogo = async (path) => {
-        return (await getUrl({ path })).url.toString();
-    }
 
     return (
         <Box sx={{ p: 3 }}>
@@ -154,7 +148,7 @@ export default function Page() {
                         >
                             <ListItemAvatar>
                                 <Avatar alt={test.name || 'Logo'}>
-                                    <StorageImage path={test.logo_path}></StorageImage>
+                                    <StorageImage path={test.logo_path} alt={test.name || 'Logo'}></StorageImage>
                                 </Avatar>
                             </ListItemAvatar>
                             <ListItemText
